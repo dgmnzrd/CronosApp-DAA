@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
+
 class CronosViewModel @Inject constructor(private val repository: CronosRepository) : ViewModel() {
 
     private val _cronosList = MutableStateFlow<List<Cronos>>(emptyList())
@@ -17,7 +18,7 @@ class CronosViewModel @Inject constructor(private val repository: CronosReposito
     init{
         viewModelScope.launch(Dispatchers.IO) {
             repository.getAllCronos().collect{item->
-                if(item.isNullOrEmpty()){
+                if(item.isEmpty()){
                     _cronosList.value = emptyList()
                 }else{
                     _cronosList.value = item

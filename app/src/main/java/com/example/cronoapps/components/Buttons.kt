@@ -48,8 +48,8 @@ fun CircleButton(
 ){
     Button(onClick = onClick, shape = CircleShape,
         contentPadding = PaddingValues(8.dp),
-        enabled=enabled,
-        modifier=Modifier.padding(horizontal=15.dp)
+        enabled = enabled,
+        modifier = Modifier.padding(horizontal = 15.dp)
     ){
         Icon(
             painter = icon,

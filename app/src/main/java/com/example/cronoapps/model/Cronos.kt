@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-// Entidades = Tablas,atributo = campo
+// Entidades = Tablas, atributo = campo
 @Entity(tableName = "cronos")
 data class Cronos(
     @PrimaryKey(autoGenerate = true)

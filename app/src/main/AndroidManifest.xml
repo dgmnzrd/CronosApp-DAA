@@ -14,10 +14,9 @@
         android:theme="@style/Theme.CronoApps"
         tools:targetApi="31">
         <activity
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.CronoApps">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

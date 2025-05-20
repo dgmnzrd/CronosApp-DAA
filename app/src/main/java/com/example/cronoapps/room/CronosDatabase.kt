@@ -7,5 +7,4 @@ import com.example.cronoapps.model.Cronos
 @Database(entities = [Cronos::class], version = 1, exportSchema = false)
 abstract class CronosDatabase:RoomDatabase() {
     abstract fun cronosDao(): CronosDatabaseDao
-
 }

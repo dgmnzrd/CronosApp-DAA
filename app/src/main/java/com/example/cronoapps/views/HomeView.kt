@@ -18,7 +18,7 @@ import com.example.cronoapps.components.MainTitle
 @Composable
 fun HomeView(navController: NavController){
    Scaffold(
-       topBar={
+       topBar = {
            CenterAlignedTopAppBar(
                title = { MainTitle(title = "Crono App")},
                colors= TopAppBarDefaults.centerAlignedTopAppBarColors(

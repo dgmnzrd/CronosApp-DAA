@@ -73,36 +73,36 @@ fun ContentAddView(it:PaddingValues,navController: NavController,cronometroVM: C
         )
 
         Row(
-            horizontalArrangement=Arrangement.Center,
-            modifier=Modifier.padding(vertical=16.dp)
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(vertical = 16.dp)
         ){
             //Iniciar
             CircleButton(
-                icon= painterResource(id=R.drawable.play),
-                enabled=!state.cronometroActivo
+                icon = painterResource(id = R.drawable.play),
+                enabled = !state.cronometroActivo
             ) {
                 cronometroVM.iniciar()
             }
 
             //Pausar
             CircleButton(
-                icon=painterResource(id=R.drawable.pause),
-                enabled=state.cronometroActivo
+                icon = painterResource(id = R.drawable.pause),
+                enabled = state.cronometroActivo
             ) {
                 cronometroVM.pausar()
             }
             //Detener
             CircleButton(
-                icon=painterResource(id=R.drawable.stop),
-                enabled=!state.cronometroActivo
+                icon = painterResource(id = R.drawable.stop),
+                enabled = !state.cronometroActivo
             ) {
                 cronometroVM.detener()
             }
 
             //Mostrar Guardar
             CircleButton(
-                icon=painterResource(id=R.drawable.save),
-                enabled=state.showSaveButton
+                icon = painterResource(id = R.drawable.save),
+                enabled = state.showSaveButton
             ) {
                 cronometroVM.showTextField()
             }

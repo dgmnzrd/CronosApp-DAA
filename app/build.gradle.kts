@@ -44,18 +44,16 @@ android {
 }
 
 dependencies {
-
-
     // Room
     val room_version = "2.6.1"
     implementation ("androidx.room:room-ktx:$room_version")
     kapt("androidx.room:room-compiler:$room_version")
 
-// Dagger Core
+    // Dagger Core
     implementation ("com.google.dagger:dagger:2.46.1")
     kapt ("com.google.dagger:dagger-compiler:2.46.1")
 
-// Dagger Android
+    // Dagger Android
     api ("com.google.dagger:dagger-android:2.46.1")
     api ("com.google.dagger:dagger-android-support:2.46.1")
     kapt ("com.google.dagger:dagger-android-processor:2.46.1")
