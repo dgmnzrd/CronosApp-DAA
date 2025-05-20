@@ -107,7 +107,5 @@ fun ContentAddView(it:PaddingValues,navController: NavController,cronometroVM: C
                 cronometroVM.showTextField()
             }
         }
-
-
     }
 }

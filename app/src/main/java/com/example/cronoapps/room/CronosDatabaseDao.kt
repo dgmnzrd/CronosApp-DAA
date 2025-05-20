@@ -9,11 +9,11 @@ import androidx.room.Update
 import com.example.cronoapps.model.Cronos
 import kotlinx.coroutines.flow.Flow
 
-//Interface -> Repositorios -> ViewModel -> View
+// Interface -> Repositorios -> ViewModel -> View
 
-@Dao //Data Access Object
+@Dao // Data Access Object
 interface CronosDatabaseDao {
-    //Crud
+    // Crud
 
     @Query("Select * From cronos")
     fun getCronos(): Flow<List<Cronos>>
