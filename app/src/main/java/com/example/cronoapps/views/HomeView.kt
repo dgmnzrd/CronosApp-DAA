@@ -16,8 +16,10 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import com.example.cronoapps.components.CronoCards
 import com.example.cronoapps.components.FloatButton
 import com.example.cronoapps.components.MainTitle
+import com.example.cronoapps.components.formatTiempo
 import com.example.cronoapps.viewModels.CronosViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,7 +50,9 @@ fun ContentHomeView(it:PaddingValues, navController: NavController, cronosVM: Cr
         val cronoList by cronosVM.cronosList.collectAsState()
         LazyColumn {
             items(cronoList) { item ->
-                Text(text = item.title)
+                CronoCards(item.title, formatTiempo(item.crono)) {
+
+                }
             }
         }
     }
