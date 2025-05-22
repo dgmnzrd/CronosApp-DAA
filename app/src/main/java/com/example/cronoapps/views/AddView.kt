@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -26,13 +27,16 @@ import androidx.navigation.NavController
 import com.example.cronoapps.R
 import com.example.cronoapps.components.CircleButton
 import com.example.cronoapps.components.MainIconButton
+import com.example.cronoapps.components.MainTextField
 import com.example.cronoapps.components.MainTitle
 import com.example.cronoapps.components.formatTiempo
+import com.example.cronoapps.model.Cronos
 import com.example.cronoapps.viewModels.CronometroViewModel
+import com.example.cronoapps.viewModels.CronosViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddView(navController: NavController,cronometroVM: CronometroViewModel){
+fun AddView(navController: NavController,cronometroVM: CronometroViewModel, cronosVM: CronosViewModel){
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -48,12 +52,12 @@ fun AddView(navController: NavController,cronometroVM: CronometroViewModel){
             )
         }
     ) {
-        ContentAddView(it, navController,cronometroVM)
+        ContentAddView(it, navController, cronometroVM, cronosVM)
     }
 }
 
 @Composable
-fun ContentAddView(it:PaddingValues,navController: NavController,cronometroVM: CronometroViewModel){
+fun ContentAddView(it:PaddingValues,navController: NavController, cronometroVM: CronometroViewModel, cronosVM: CronosViewModel) {
     val state = cronometroVM.state
 
     LaunchedEffect(state.cronometroActivo) {
@@ -61,11 +65,12 @@ fun ContentAddView(it:PaddingValues,navController: NavController,cronometroVM: C
     }
 
     Column(
-        modifier = Modifier.padding(it)
+        modifier = Modifier
+            .padding(it)
             .padding(top = 30.dp)
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    ) {
         Text(
             text=formatTiempo(cronometroVM.tiempo),
             fontSize = 50.sp,
@@ -75,7 +80,7 @@ fun ContentAddView(it:PaddingValues,navController: NavController,cronometroVM: C
         Row(
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier.padding(vertical = 16.dp)
-        ){
+        ) {
             //Iniciar
             CircleButton(
                 icon = painterResource(id = R.drawable.play),
@@ -105,6 +110,24 @@ fun ContentAddView(it:PaddingValues,navController: NavController,cronometroVM: C
                 enabled = state.showSaveButton
             ) {
                 cronometroVM.showTextField()
+            }
+        }
+        if(state.showTextField) {
+            MainTextField(
+                value = state.title,
+                onValueChange = {cronometroVM.onValue(it)},
+                label = "Titulo",
+            )
+            Button(onClick = {
+                cronosVM.addCrono(
+                    Cronos(
+                        title = state.title,
+                        crono = cronometroVM.tiempo
+                    )
+                )
+                navController.popBackStack()
+            } ) {
+                Text(text = "Guardar")
             }
         }
     }
