@@ -36,7 +36,7 @@ import com.example.cronoapps.viewModels.CronosViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddView(navController: NavController,cronometroVM: CronometroViewModel, cronosVM: CronosViewModel){
+fun AddView(navController: NavController, cronometroVM: CronometroViewModel, cronosVM: CronosViewModel) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
