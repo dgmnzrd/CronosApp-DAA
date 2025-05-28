@@ -16,6 +16,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,6 +34,7 @@ import com.example.cronoapps.components.formatTiempo
 import com.example.cronoapps.model.Cronos
 import com.example.cronoapps.viewModels.CronometroViewModel
 import com.example.cronoapps.viewModels.CronosViewModel
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,78 +59,88 @@ fun EditView(navController: NavController, cronometroVM: CronometroViewModel, cr
 }
 
 @Composable
-fun ContentEditView(it:PaddingValues,navController: NavController, cronometroVM: CronometroViewModel, cronosVM: CronosViewModel, id: Long) {
+fun ContentEditView(it: PaddingValues, navController: NavController, cronometroVM: CronometroViewModel, cronos: CronosViewModel, id: Long) {
     val state = cronometroVM.state
 
     LaunchedEffect(state.cronometroActivo) {
         cronometroVM.cronos()
     }
 
+    LaunchedEffect(Unit) {
+        cronometroVM.getCronoById(id)
+    }
+
     Column(
-        modifier = Modifier
-            .padding(it)
+        modifier = Modifier.padding(it)
             .padding(top = 30.dp)
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text=formatTiempo(cronometroVM.tiempo),
+            text = formatTiempo(cronometroVM.tiempo),
             fontSize = 50.sp,
             fontWeight = FontWeight.Bold
         )
-
-        Text(text = id.toString())
+        //Text(text=id.toString())
         Row(
             horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(vertical = 16.dp)
+            modifier = Modifier.padding(vertical=16.dp)
         ) {
             //Iniciar
             CircleButton(
-                icon = painterResource(id = R.drawable.play),
-                enabled = !state.cronometroActivo
+                icon= painterResource(id = R.drawable.play),
+                enabled=!state.cronometroActivo
             ) {
                 cronometroVM.iniciar()
             }
 
             //Pausar
             CircleButton(
-                icon = painterResource(id = R.drawable.pause),
-                enabled = state.cronometroActivo
+                icon=painterResource(id = R.drawable.pause),
+                enabled=state.cronometroActivo
             ) {
                 cronometroVM.pausar()
             }
-            //Detener
+            /*Detener
             CircleButton(
-                icon = painterResource(id = R.drawable.stop),
-                enabled = !state.cronometroActivo
+                icon=painterResource(id=R.drawable.stop),
+                enabled=!state.cronometroActivo
             ) {
                 cronometroVM.detener()
-            }
+            }*/
 
-            //Mostrar Guardar
+            /*Mostrar Guardar
             CircleButton(
-                icon = painterResource(id = R.drawable.save),
-                enabled = state.showSaveButton
+                icon=painterResource(id=R.drawable.save),
+                enabled=state.showSaveButton
             ) {
                 cronometroVM.showTextField()
-            }
+            }*/
         }
-        if(state.showTextField) {
-            MainTextField(
-                value = state.title,
-                onValueChange = {cronometroVM.onValue(it)},
-                label = "Titulo",
-            )
-            Button(onClick = {
-                cronosVM.addCrono(
-                    Cronos(
-                        title = state.title,
-                        crono = cronometroVM.tiempo
-                    )
-                )
-                navController.popBackStack()
-            } ) {
-                Text(text = "Guardar")
+        //if(state.showTextField) {
+        MainTextField(
+            value = state.title,
+            onValueChange = {cronometroVM.onValue(it)},
+            label = "Titulo",
+        )
+        Button(onClick = {
+            //cronos.addCrono(
+            cronos.updateCrono(
+                Cronos(
+                    id = id, //agregar id
+                    title = state.title,
+                    crono = cronometroVM.tiempo
+                ))
+            //cronometroVM.detener()
+            navController.popBackStack()
+        }) {
+            //Text(text = "Guardar")
+            Text(text = "Editar")
+        }
+        //}
+        DisposableEffect(Unit) {
+            onDispose {
+                cronometroVM.detener()
             }
         }
     }

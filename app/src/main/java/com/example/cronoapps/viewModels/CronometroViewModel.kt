@@ -3,39 +3,54 @@ package com.example.cronoapps.viewModels
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cronoapps.repository.CronosRepository
 import com.example.cronoapps.state.CronoState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import androidx.compose.runtime.mutableLongStateOf
 
-class CronometroViewModel:ViewModel() {
+@HiltViewModel
+class CronometroViewModel @Inject constructor(private val repository: CronosRepository):ViewModel() {
     var state by mutableStateOf(CronoState())
         private set
     private var cronoJob by mutableStateOf<Job?>(null)
     var tiempo by mutableLongStateOf(0L)
-    fun onValue(value: String){
+
+    fun getCronoById(id:Long) {
+        viewModelScope.launch {
+            repository.getCronoById(id).collect{item->
+                //Se agrega if por error al eliminar
+                tiempo = item.crono
+                state = state.copy(title = item.title)
+            }
+        }
+    }
+
+    fun onValue(value: String) {
         state = state.copy(
             title = value
         )
     }
 
-    fun iniciar(){
-        state = state.copy(
+    fun iniciar() {
+        state=state.copy(
             cronometroActivo = true
         )
     }
 
-    fun pausar(){
-        state = state.copy(
+    fun pausar() {
+        state=state.copy(
             cronometroActivo = false,
             showSaveButton = true
         )
     }
 
-    fun detener(){
+    fun detener() {
         cronoJob?.cancel()
         tiempo=0
         state = state.copy(
@@ -45,24 +60,23 @@ class CronometroViewModel:ViewModel() {
         )
     }
 
-    fun showTextField(){
-        state = state.copy(
+    fun showTextField() {
+        state=state.copy(
             showTextField = true
         )
     }
 
-    fun cronos(){
-        if(state.cronometroActivo){
+    fun cronos() {
+        if(state.cronometroActivo) {
             cronoJob?.cancel()
             cronoJob = viewModelScope.launch {
-                while(true){
+                while(true) {
                     delay(1000)
-                    tiempo += 1000
+                    tiempo+=1000
                 }
             }
-        }else{
+        } else {
             cronoJob?.cancel()
         }
     }
-
 }
